@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 
 public class SingleConnectionBD {
 	
-	private static String bd = "jdbc:postgresql://localhost:5432/cursojsp?autoReconnect=true";
-	private static String user = "pg";
-	private static String password = "pg";	
+	private static String bd = "jdbc:postgresql://localhost:5433/cursojsp?autoReconnect=true";
+	private static String user = "postgres";
+	private static String password = "postgres";	
 	private static Connection conn = null;
 	
 	static {

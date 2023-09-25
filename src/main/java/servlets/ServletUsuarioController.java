@@ -24,6 +24,7 @@ public class ServletUsuarioController extends HttpServlet {
 	public ServletUsuarioController() {
 		super();
 	}
+	
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -38,13 +39,13 @@ public class ServletUsuarioController extends HttpServlet {
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios();
 				request.setAttribute("listaUsuarios", listaUsuarios);				
 				
-				request.setAttribute("msg", "Usuário execluído com sucesso.");
+				request.setAttribute("msg", "Usuario execluido com sucesso.");
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarAjax")) {
 				String id = request.getParameter("id");
 				daoUsuarioRepository.deletarUsuario(id);
-				response.getWriter().write("Usuário execluído com sucesso.");
+				response.getWriter().write("Usuario execluido com sucesso.");
 								
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("PesquisarUsuarioAjax")) {
 				String nomePesquisa = request.getParameter("nomePesquisa");
@@ -69,14 +70,13 @@ public class ServletUsuarioController extends HttpServlet {
 				
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios();
 				
-				request.setAttribute("msg", "Lista de Usuários");
+				request.setAttribute("msg", "Lista de Usuarios");
 				request.setAttribute("listaUsuarios", listaUsuarios);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			} else {
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios();
-				request.setAttribute("listaUsuarios", listaUsuarios);
-				
+				request.setAttribute("listaUsuarios", listaUsuarios);				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 			
@@ -121,7 +121,7 @@ public class ServletUsuarioController extends HttpServlet {
 					msg = "Usuário alterado.";
 				}
 
-				modelLogin = daoUsuarioRepository.gravarUsuário(modelLogin);
+				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 			}
 			
 			List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios();

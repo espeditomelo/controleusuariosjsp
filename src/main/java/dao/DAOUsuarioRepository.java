@@ -19,7 +19,7 @@ public class DAOUsuarioRepository {
 		conn = SingleConnectionBD.getConnection();
 	}
 
-	public ModelLogin gravarUsuário(ModelLogin modelLogin) throws SQLException {
+	public ModelLogin gravarUsuario(ModelLogin modelLogin) throws SQLException {
 
 		if (modelLogin.isNovo()) {
 			String sql = "INSERT INTO public.model_login (login, senha, nome, email) VALUES(UPPER(?), UPPER(?), UPPER(?), UPPER(?));";
