@@ -9,7 +9,10 @@ public class ModelLogin implements Serializable {
 	private String nome;
 	private String email;
 	private String login;
-	private String senha;
+	private String senha;	
+	private boolean admin;
+	private String perfil;
+	private String sexo;	
 
 	public Long getId() {
 		return id;
@@ -51,6 +54,31 @@ public class ModelLogin implements Serializable {
 		this.senha = senha;
 	}
 
+	
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+	
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}	
+	
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public boolean isNovo() {
 		if (this.id == null) {
 			return true;
@@ -60,5 +88,6 @@ public class ModelLogin implements Serializable {
 
 		return id == null;
 	}
+
 
 }

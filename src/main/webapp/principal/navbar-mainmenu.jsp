@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<c:set scope="session" var="perfil" value='<%= request.getSession().getAttribute("perfil").toString() %>'></c:set>
+   
 <nav class="pcoded-navbar">
                       <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
                       <div class="pcoded-inner-navbar main-menu">
@@ -47,20 +51,24 @@
                                       <span class="pcoded-mcaret"></span>
                                   </a>
                                   <ul class="pcoded-submenu">
-                                      <li class=" ">
-                                          <a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=listarUsuarios" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Usuário</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
-                                      <li class=" ">
-                                          <a href="breadcrumb.html" class="waves-effect waves-dark">
-                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Breadcrumbs</span>
-                                              <span class="pcoded-mcaret"></span>
-                                          </a>
-                                      </li>
+                                  	
+                                  	  <c:if test="${perfil == 'ADMIN'}">
+	                                      <li class=" ">
+	                                          <a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=listarUsuarios" class="waves-effect waves-dark">
+	                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+	                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Usuário</span>
+	                                              <span class="pcoded-mcaret"></span>
+	                                          </a>
+	                                      </li>
+                                      </c:if>
+                                      
+	                                  <li class=" ">
+	                                          <a href="breadcrumb.html" class="waves-effect waves-dark">
+	                                              <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+	                                              <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Breadcrumbs</span>
+	                                              <span class="pcoded-mcaret"></span>
+	                                          </a>
+	                                  </li>                                      
                                       <li class=" ">
                                           <a href="button.html" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

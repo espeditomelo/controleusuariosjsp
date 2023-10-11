@@ -10,13 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.DAOLoginRepository;
+import dao.DAOUsuarioRepository;
 import model.ModelLogin;
+
 
 @WebServlet(urlPatterns = { "/principal/ServletLogin", "/ServletLogin" }) // mapeamento de url que vem da tela
 public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
+	
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
 	public ServletLogin() {
 		super();
@@ -56,8 +60,13 @@ public class ServletLogin extends HttpServlet {
 				modelLogin.setSenha(senha);
 
 				if (daoLoginRepository.validarAutenticacao(modelLogin)) {
+					
+					modelLogin = daoUsuarioRepository.consultarUsuarioLogado(login);
 
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
+					
+					//request.getSession().setAttribute("isAdmin", modelLogin.isAdmin());
+					request.getSession().setAttribute("perfil", modelLogin.getPerfil());
 
 					if (url == null || url.equals("null")) {
 						url = "principal/principal.jsp";

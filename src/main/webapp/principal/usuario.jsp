@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
@@ -65,6 +66,40 @@
 															</div>
 															
 															<div class="form-group form-default form-static-label">
+																<select class="form-control"
+																	aria-label="Default select example" name="perfil">																	
+																	<option disabled="disabled">[Selecione uma opção]</option>
+																	
+																	<option value="ADMIN" <%																	
+																		ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");																	
+																		if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %> >Admin</option>																	
+																	
+																	<option value="SECRETARIA" <%
+																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																		if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %> >Secretária</option>																	
+																	
+																	<option value="ALFAIATE" <%
+																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																		if (modelLogin != null && modelLogin.getPerfil().equals("ALFAIATE")) {
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %> >Alfaiate</option>			
+																	 																	
+																</select>
+																<span class="form-bar"></span>
+																<label class="float-label">Perfil</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login"
 																	class="form-control" required="required" value="${modelLogin.login}"> <span
 																	class="form-bar"></span> <label class="float-label">Login</label>
@@ -76,6 +111,33 @@
 																	autocomplete="off" value="${modelLogin.senha}"> <span class="form-bar"></span>
 																<label class="float-label">Senha</label>
 															</div>
+															
+															
+															<div class="form-group form-default form-static-label">
+																<select class="form-control"
+																	aria-label="Default select example" name="genero">																	
+																	<option disabled="disabled">[Selecione uma opção]</option>
+																	
+																	<option value="M" <%																	
+																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");																	
+																		if (modelLogin != null && modelLogin.getSexo().equals("M")) {
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %> >Masculino</option>																	
+																	
+																	<option value="F" <%
+																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+																		if (modelLogin != null && modelLogin.getSexo().equals("F")) {
+																			out.print(" ");
+																			out.print("selected=\"selected\"");
+																			out.print(" ");
+																		} %> >Feminino</option> 																	
+																</select>
+																<span class="form-bar"></span>
+																<label class="float-label">Sexo</label>
+															</div>								
+															
 
 															<div class="card-block">
 																<button type="button"
@@ -104,6 +166,8 @@
 													<tr>
 														<th scope="col">Id</th>
 														<th scope="col">Nome</th>
+														<th scope="col">Perfil</th>
+														<th scope="col">Sexo</th>
 														<th scope="col">Ver</th>
 													</tr>
 												</thead>
@@ -112,6 +176,8 @@
 														<tr>
 															<td><c:out value="${lU.id}"></c:out></td>
 															<td><c:out value="${lU.nome}"></c:out></td>
+															<td><c:out value="${lU.perfil}"></c:out></td>
+															<td><c:out value="${lU.sexo}"></c:out></td>
 															<!-- <td> <button type="button" class="btn btn-primary btn-round waves-effect waves-light">Ver</button></td> --> 
 															<td><a class="btn btn-primary btn-round waves-effect waves-light" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=pesquisarParaEditar&id=${lU.id}">Ver</a></td>
 															
@@ -158,6 +224,8 @@
 			    <tr>
 			      <th scope="col">Id</th>
 			      <th scope="col">Nome</th>
+			      <th scope="col">Perfil</th>
+			      <th scope="col">Sexo</th>
 			      <th scope="col">Ver</th>			      
 			    </tr>
 			  </thead>
@@ -209,8 +277,14 @@
 					$('#tabelaResultadoPesquisa > tbody > tr').remove();
 					
 					for(var i = 0; i < json.length; i++){
-						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
-						document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
+						/* $('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  
+						<td>'+json[i].nome+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" 
+						class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
+						document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length; */
+						
+						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
+								document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
+						
 					}
 					
 				}
