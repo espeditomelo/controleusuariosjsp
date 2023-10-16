@@ -5,15 +5,20 @@ import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import model.ModelLogin;
 
+@MultipartConfig
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
 public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +34,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			throws ServletException, IOException {
 		
 		try {
-			String acao = request.getParameter("acao");
+			String acao = request.getParameter("acao");		
 			
 			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
 				String id = request.getParameter("id");
@@ -104,9 +109,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String senha = request.getParameter("senha");
 			String perfil = request.getParameter("perfil");
 			String sexo = request.getParameter("genero");
-			//String sexo = request.getParameter("senha");
 
 			ModelLogin modelLogin = new ModelLogin();
+			
 			modelLogin.setId(id != null && !id.isEmpty() ? Long.parseLong(id) : null);
 			modelLogin.setNome(nome);
 			modelLogin.setEmail(email);
@@ -114,6 +119,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setSenha(senha);
 			modelLogin.setPerfil(perfil);
 			modelLogin.setSexo(sexo);
+			
+			
+			
+			if(ServletFileUpload.isMultipartContent(request)) {
+	
+			}
+			
+			
+			
 
 			if (daoUsuarioRepository.verificaLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Login já existe";

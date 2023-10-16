@@ -13,6 +13,9 @@ public class ModelLogin implements Serializable {
 	private boolean admin;
 	private String perfil;
 	private String sexo;	
+	private String fotoUsuario;
+	private String extensaoFotoUsuario;
+	
 
 	public Long getId() {
 		return id;
@@ -77,6 +80,23 @@ public class ModelLogin implements Serializable {
 
 	public void setSexo(String sexo) {
 		this.sexo = sexo;
+	}
+	
+	
+	public String getFotoUsuario() {
+		return fotoUsuario;
+	}
+
+	public void setFotoUsuario(String fotoUsuario) {
+		this.fotoUsuario = fotoUsuario;
+	}
+
+	public String getExtensaoFotoUsuario() {
+		return extensaoFotoUsuario;
+	}
+
+	public void setExtensaoFotoUsuario(String extensaoFotoUsuario) {
+		this.extensaoFotoUsuario = extensaoFotoUsuario;
 	}
 
 	public boolean isNovo() {

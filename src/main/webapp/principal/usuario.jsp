@@ -44,7 +44,7 @@
 
 													<div class="card-block">
 														<h4 class="sub-title">Cadastro do Usuário</h4>
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
+														<form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
 															
 															<input type="hidden" name="acao" id="acao" value="">
 															
@@ -53,6 +53,20 @@
 																	class="form-control" readonly="readonly" value="${modelLogin.id}"> <span
 																	class="form-bar"></span> <label class="float-label">Id</label>
 															</div>
+
+
+															<div class="form-group form-default form-static-label">
+																<div class="mb-3">
+																	<label for="formFileSm" class="form-label">Foto</label>
+																	<div>
+																		<img alt="Foto usuário" id="fotoBase64" src="" width="70px">
+																	</div>
+																	<br>
+																	<input id="arquivoFoto" name="arquivoFoto" accept="image/*" onchange="visualizarImagem('fotoBase64', 'arquivoFoto');" class="form-control form-control-sm" type="file">
+																</div>
+															</div>
+
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome"
 																	class="form-control" required="required" value="${modelLogin.nome}"> <span
@@ -249,6 +263,27 @@
 	<jsp:include page="javascript.jsp"></jsp:include>
 	
 	<script type="text/javascript">
+	
+	
+	function visualizarImagem(fotoBase64, arquivoFoto) {
+		
+		alert('dentro da funcao visualizarImagem');
+	
+		var preview = document.getElementById(fotoBase64);
+		var arquivoUsuario = document.getElementById(arquivoFoto).files[0];
+		var reader = new FileReader();
+	
+		
+		reader.onloadend = function () {
+			preview.src = reader.result; // carregar foto na tela
+		};
+		
+		if (arquivoUsuario) {
+			reader.readAsDataURL(arquivoUsuario); // preview da imagem
+		} else {
+			preview.src = '';
+		}
+	}
 	
 	function verUsuarioSelecionado(id) {
 		
