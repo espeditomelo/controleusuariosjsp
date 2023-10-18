@@ -11,12 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import model.ModelLogin;
+
+
 
 @MultipartConfig
 @WebServlet(urlPatterns = {"/ServletUsuarioController"})
@@ -121,14 +124,39 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setSexo(sexo);
 			
 			
-			
+					
 			if(ServletFileUpload.isMultipartContent(request)) {
-	
-			}
+				
+				
+				Part part = request.getPart("arquivoFoto");	
+		
+				
+				byte[] foto = new byte[(int) part.getSize()];
+				
+				/*try {
+					
+					part.getInputStream().read(foto);
+					// String base64AsString = new String(Base64.encodeBase64String(foto));
+					String base64AsString = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new String(Base64.encodeBase64String(foto));
+					
+					modelLogin.setFotoUsuario(base64AsString);
+					modelLogin.setExtensaoFotoUsuario(part.getContentType().split("\\/")[1]);
+					
+				} catch (Exception e) {
+					// TODO: handle exception
+				}*/
+				
+				part.getInputStream().read(foto);
+				// String base64AsString = new String(Base64.encodeBase64String(foto));
+				String base64AsString = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new String(Base64.encodeBase64String(foto));
+				
+				modelLogin.setFotoUsuario(base64AsString);
+				modelLogin.setExtensaoFotoUsuario(part.getContentType().split("\\/")[1]);
+				
+				
+				
+ 			}
 			
-			
-			
-
 			if (daoUsuarioRepository.verificaLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Login já existe";
 			} else {

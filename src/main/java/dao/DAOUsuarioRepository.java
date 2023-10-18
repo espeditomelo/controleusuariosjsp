@@ -38,8 +38,28 @@ public class DAOUsuarioRepository {
 			preparedStatement.execute();
 
 			conn.commit();
+			
+			if(modelLogin.getFotoUsuario() != null && !modelLogin.getFotoUsuario().isEmpty()) {
+				
+				sql = "UPDATE public.model_login SET fotousuario = ?, extensaofotousuario = ? WHERE login = UPPER(?)";
+				//sql = "UPDATE model_login SET extensaofotousuario = ? WHERE login = UPPER(?)";
+				
+				preparedStatement = conn.prepareStatement(sql);
+				
+				preparedStatement.setString(1, modelLogin.getFotoUsuario());
+				preparedStatement.setString(2, modelLogin.getExtensaoFotoUsuario());
+				preparedStatement.setString(3, modelLogin.getLogin());				
+						
+				preparedStatement.execute();
+				
+				//System.out.println(modelLogin.getExtensaoFotoUsuario());
+				
+				conn.commit();
+			}
+			
 
 		} else {
+			
 			String sql = "UPDATE model_login SET login=UPPER(?), senha=UPPER(?), nome=UPPER(?), email=UPPER(?), perfil=? , sexo=? WHERE id= '" +  modelLogin.getId() + "';";
 
 			PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -54,6 +74,22 @@ public class DAOUsuarioRepository {
 			preparedStatement.executeUpdate();
 
 			conn.commit();
+			
+			if (modelLogin.getFotoUsuario() != null && !modelLogin.getFotoUsuario().isEmpty()) {
+
+				sql = "update public.model_login set fotousuario = ?, extensaofotousuario = ? where login = ?";
+
+				preparedStatement = conn.prepareStatement(sql);
+
+				preparedStatement.setString(1, modelLogin.getFotoUsuario());
+				preparedStatement.setString(2, modelLogin.getExtensaoFotoUsuario());
+				preparedStatement.setLong(3, modelLogin.getId());
+
+				preparedStatement.execute();
+
+				conn.commit();
+			}
+			
 		}
 
 		return this.consultarUsuario(modelLogin.getLogin(), usuarioLogado);

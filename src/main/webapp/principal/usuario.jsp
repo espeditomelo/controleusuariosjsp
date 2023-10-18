@@ -267,7 +267,7 @@
 	
 	function visualizarImagem(fotoBase64, arquivoFoto) {
 		
-		alert('dentro da funcao visualizarImagem');
+		//alert('dentro da funcao visualizarImagem');
 	
 		var preview = document.getElementById(fotoBase64);
 		var arquivoUsuario = document.getElementById(arquivoFoto).files[0];
