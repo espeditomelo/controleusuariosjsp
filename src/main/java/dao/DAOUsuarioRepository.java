@@ -42,7 +42,6 @@ public class DAOUsuarioRepository {
 			if(modelLogin.getFotoUsuario() != null && !modelLogin.getFotoUsuario().isEmpty()) {
 				
 				sql = "UPDATE public.model_login SET fotousuario = ?, extensaofotousuario = ? WHERE login = UPPER(?)";
-				//sql = "UPDATE model_login SET extensaofotousuario = ? WHERE login = UPPER(?)";
 				
 				preparedStatement = conn.prepareStatement(sql);
 				
@@ -51,8 +50,6 @@ public class DAOUsuarioRepository {
 				preparedStatement.setString(3, modelLogin.getLogin());				
 						
 				preparedStatement.execute();
-				
-				//System.out.println(modelLogin.getExtensaoFotoUsuario());
 				
 				conn.commit();
 			}
@@ -77,7 +74,7 @@ public class DAOUsuarioRepository {
 			
 			if (modelLogin.getFotoUsuario() != null && !modelLogin.getFotoUsuario().isEmpty()) {
 
-				sql = "update public.model_login set fotousuario = ?, extensaofotousuario = ? where login = ?";
+				sql = "update public.model_login set fotousuario = ?, extensaofotousuario = ? where id = ?";
 
 				preparedStatement = conn.prepareStatement(sql);
 
@@ -245,6 +242,8 @@ public class DAOUsuarioRepository {
 			modelLogin.setSenha(resultSet.getString("senha"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+			
+			//modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
 		}
 		return modelLogin;		
 	}

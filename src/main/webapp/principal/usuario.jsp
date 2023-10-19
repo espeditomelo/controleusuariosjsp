@@ -59,7 +59,9 @@
 																<div class="mb-3">
 																	<label for="formFileSm" class="form-label">Foto</label>
 																	<div>
-																		<img alt="Foto usuário" id="fotoBase64" src="" width="70px">
+																		
+																		<img alt="Foto usuário" id="fotoBase64" src="" width="70px">															
+																		
 																	</div>
 																	<br>
 																	<input id="arquivoFoto" name="arquivoFoto" accept="image/*" onchange="visualizarImagem('fotoBase64', 'arquivoFoto');" class="form-control form-control-sm" type="file">
@@ -312,11 +314,7 @@
 					$('#tabelaResultadoPesquisa > tbody > tr').remove();
 					
 					for(var i = 0; i < json.length; i++){
-						/* $('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  
-						<td>'+json[i].nome+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" 
-						class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
-						document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length; */
-						
+												
 						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
 								document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
 						
