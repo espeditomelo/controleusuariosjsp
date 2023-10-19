@@ -147,7 +147,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				}*/
 				
 				part.getInputStream().read(foto);
-				// String base64AsString = new String(Base64.encodeBase64String(foto));
+
 				String base64AsString = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new String(Base64.encodeBase64String(foto));
 				
 				modelLogin.setFotoUsuario(base64AsString);
