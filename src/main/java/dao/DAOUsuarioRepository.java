@@ -143,6 +143,7 @@ public class DAOUsuarioRepository {
 			modelLogin.setAdmin(resultSet.getBoolean("admin"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
+				modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
 		}
 		
 		return modelLogin;
@@ -167,7 +168,8 @@ public class DAOUsuarioRepository {
 			modelLogin.setLogin(resultSet.getString("login"));
 			modelLogin.setSenha(resultSet.getString("senha"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
-			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setSexo(resultSet.getString("sexo"));			
+				modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
 		}
 		
 		return modelLogin;
@@ -241,9 +243,8 @@ public class DAOUsuarioRepository {
 			modelLogin.setLogin(resultSet.getString("login"));
 			modelLogin.setSenha(resultSet.getString("senha"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
-			modelLogin.setSexo(resultSet.getString("sexo"));
-			
-			//modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
+			modelLogin.setSexo(resultSet.getString("sexo"));			
+				modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
 		}
 		return modelLogin;		
 	}

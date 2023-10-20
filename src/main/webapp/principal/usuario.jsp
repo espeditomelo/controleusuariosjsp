@@ -59,9 +59,12 @@
 																<div class="mb-3">
 																	<label for="formFileSm" class="form-label">Foto</label>
 																	<div>
-																		
-																		<img alt="Foto usuário" id="fotoBase64" src="" width="70px">															
-																		
+																		<c:if test="${modelLogin.fotoUsuario != '' && modelLogin.fotoUsuario != null}">
+																			<img alt="Foto usuário" id="fotoBase64" src="${modelLogin.fotoUsuario}" width="70px">															
+																		</c:if>
+																		<c:if test="${modelLogin.fotoUsuario == '' || modelLogin.fotoUsuario == null}">
+																			<img alt="Foto usuário" id="fotoBase64" src="assets/images/avatar-1.jpg" width="70px">															
+																		</c:if>
 																	</div>
 																	<br>
 																	<input id="arquivoFoto" name="arquivoFoto" accept="image/*" onchange="visualizarImagem('fotoBase64', 'arquivoFoto');" class="form-control form-control-sm" type="file">
