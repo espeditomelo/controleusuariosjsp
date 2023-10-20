@@ -40,7 +40,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String acao = request.getParameter("acao");		
 			
 			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
+				
 				String id = request.getParameter("id");
+				
 				daoUsuarioRepository.deletarUsuario(id);
 				
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios(super.getUsuarioLogado(request));
@@ -80,6 +82,17 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("msg", "Lista de Usuarios");
 				request.setAttribute("listaUsuarios", listaUsuarios);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+			
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+				
+				String id = request.getParameter("id");
+				
+				ModelLogin modelLogin = daoUsuarioRepository.consultarUsuarioId(id, super.getUsuarioLogado(request));
+				
+				if (modelLogin.getFotoUsuario() != null && !modelLogin.getFotoUsuario().isEmpty()) {
+					response.setHeader("Content-Disposition", "attachment;filename=imagem." + modelLogin.getExtensaoFotoUsuario());
+					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotoUsuario().split("\\,")[1]));
+				}
 				
 			} else {
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios(super.getUsuarioLogado(request));

@@ -244,7 +244,8 @@ public class DAOUsuarioRepository {
 			modelLogin.setSenha(resultSet.getString("senha"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));			
-				modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
+			modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
+			modelLogin.setExtensaoFotoUsuario(resultSet.getString("extensaofotousuario"));
 		}
 		return modelLogin;		
 	}

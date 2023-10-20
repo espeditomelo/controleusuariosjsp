@@ -60,7 +60,9 @@
 																	<label for="formFileSm" class="form-label">Foto</label>
 																	<div>
 																		<c:if test="${modelLogin.fotoUsuario != '' && modelLogin.fotoUsuario != null}">
-																			<img alt="Foto usuário" id="fotoBase64" src="${modelLogin.fotoUsuario}" width="70px">															
+																			<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
+																				<img alt="Foto usuário" id="fotoBase64" src="${modelLogin.fotoUsuario}" width="70px">
+																			</a>																																		
 																		</c:if>
 																		<c:if test="${modelLogin.fotoUsuario == '' || modelLogin.fotoUsuario == null}">
 																			<img alt="Foto usuário" id="fotoBase64" src="assets/images/avatar-1.jpg" width="70px">															
