@@ -1,11 +1,11 @@
 <%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 
 <jsp:include page="head.jsp"></jsp:include>
@@ -43,7 +43,7 @@
 												<div class="card">
 
 													<div class="card-block">
-														<h4 class="sub-title">Cadastro do Usu√°rio</h4>
+														<h4 class="sub-title">Cadastro do Usu·rio</h4>
 														<form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
 															
 															<input type="hidden" name="acao" id="acao" value="">
@@ -61,11 +61,11 @@
 																	<div>
 																		<c:if test="${modelLogin.fotoUsuario != '' && modelLogin.fotoUsuario != null}">
 																			<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
-																				<img alt="Foto usu√°rio" id="fotoBase64" src="${modelLogin.fotoUsuario}" width="70px">
+																				<img alt="Foto usu·rio" id="fotoBase64" src="${modelLogin.fotoUsuario}" width="70px">
 																			</a>																																		
 																		</c:if>
 																		<c:if test="${modelLogin.fotoUsuario == '' || modelLogin.fotoUsuario == null}">
-																			<img alt="Foto usu√°rio" id="fotoBase64" src="assets/images/avatar-1.jpg" width="70px">															
+																			<img alt="Foto usu·rio" id="fotoBase64" src="assets/images/avatar-1.jpg" width="70px">															
 																		</c:if>
 																	</div>
 																	<br>
@@ -89,7 +89,7 @@
 															<div class="form-group form-default form-static-label">
 																<select class="form-control"
 																	aria-label="Default select example" name="perfil">																	
-																	<option disabled="disabled">[Selecione uma op√ß√£o]</option>
+																	<option disabled="disabled">[Selecione uma opÁ„o]</option>
 																	
 																	<option value="ADMIN" <%																	
 																		ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");																	
@@ -105,7 +105,7 @@
 																			out.print(" ");
 																			out.print("selected=\"selected\"");
 																			out.print(" ");
-																		} %> >Secret√°ria</option>																	
+																		} %> >Secret·ria</option>																	
 																	
 																	<option value="ALFAIATE" <%
 																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");
@@ -132,12 +132,11 @@
 																	autocomplete="off" value="${modelLogin.senha}"> <span class="form-bar"></span>
 																<label class="float-label">Senha</label>
 															</div>
-															
-															
+																														
 															<div class="form-group form-default form-static-label">
 																<select class="form-control"
 																	aria-label="Default select example" name="genero">																	
-																	<option disabled="disabled">[Selecione uma op√ß√£o]</option>
+																	<option disabled="disabled">[Selecione uma opÁ„o]</option>
 																	
 																	<option value="M" <%																	
 																		modelLogin = (ModelLogin) request.getAttribute("modelLogin");																	
@@ -154,11 +153,52 @@
 																			out.print("selected=\"selected\"");
 																			out.print(" ");
 																		} %> >Feminino</option> 																	
-																</select>
+																</select>			
 																<span class="form-bar"></span>
 																<label class="float-label">Sexo</label>
-															</div>								
+															</div>
 															
+															<div class="form-group form-default form-static-label">
+																	<input onblur="pesquisarCep();" type="text" name="cep" id="cep"
+																		class="form-control" required="required"
+																		value="${modelLogin.cep}"> <span
+																		class="form-bar"></span> <label class="float-label">CEP</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																	<input type="text" name="logradouro" id="logradouro" readonly="readonly"
+																		class="form-control" required="required"
+																		value="${modelLogin.logradouro}"> <span
+																		class="form-bar"></span> <label class="float-label">Logradouro</label>
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																	<input type="text" name="numero" id="numero"
+																		class="form-control" required="required"
+																		value="${modelLogin.numero}"> <span
+																		class="form-bar"></span> <label class="float-label">N˙mero</label>
+															</div>
+																								
+															<div class="form-group form-default form-static-label">
+																	<input type="text" name="bairro" id="bairro" readonly="readonly"
+																		class="form-control" required="required"
+																		value="${modelLogin.bairro}"> <span
+																		class="form-bar"></span> <label class="float-label">Bairro</label>
+															</div>									
+															
+															<div class="form-group form-default form-static-label">
+																	<input type="text" name="cidade" id="cidade" readonly="readonly"
+																		class="form-control" required="required"
+																		value="${modelLogin.cidade}"> <span
+																		class="form-bar"></span> <label class="float-label">Cidade</label>
+															</div>	
+															
+															<div class="form-group form-default form-static-label">
+																	<input type="text" name="uf" id="uf" readonly="readonly"
+																		class="form-control" required="required"
+																		value="${modelLogin.uf}"> <span
+																		class="form-bar"></span> <label class="float-label">UF</label>
+															</div>																														
 
 															<div class="card-block">
 																<button type="button"
@@ -225,14 +265,14 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">Pesquisar Usu√°rio</h5>
+	        <h5 class="modal-title" id="exampleModalLabel">Pesquisar Usu·rio</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	      </div>
 	      <div class="modal-body">
 	        <div class="input-group mb-3">
-			  <input type="text" id="nomePesquisa" class="form-control" placeholder="Nome do usu√°rio" aria-label="Nome do Usu√°rio" aria-describedby="basic-addon2">
+			  <input type="text" id="nomePesquisa" class="form-control" placeholder="Nome do usu·rio" aria-label="Nome do Usu·rio" aria-describedby="basic-addon2">
 			  <div class="input-group-append">
 			    <button class="btn btn-success" type="button" onclick="pesquisarUsuario();">Pesquisar</button>
 			  </div>
@@ -271,6 +311,22 @@
 	
 	<script type="text/javascript">
 	
+	function pesquisarCep() {
+		var cep = $("#cep").val();
+		
+		$.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+            if (!("erro" in dados)) {
+                //Atualiza os campos com os valores da consulta.
+                $("#cep").val(dados.cep);
+                $("#logradouro").val(dados.logradouro);
+                $("#bairro").val(dados.bairro);
+                $("#cidade").val(dados.localidade);
+                $("#uf").val(dados.uf);
+            } //end if.
+            
+        });
+	}
 	
 	function visualizarImagem(fotoBase64, arquivoFoto) {
 		
@@ -321,7 +377,7 @@
 					for(var i = 0; i < json.length; i++){
 												
 						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
-								document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usu√°rios pesquisados: ' + json.length;
+								document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usu·rios pesquisados: ' + json.length;
 						
 					}
 					
@@ -329,7 +385,7 @@
 				
 									
 			}).fail(function(xhr, status, errorThrown){
-				alert('Erro ao tentar pesquisar usu√°rio por nome: ' + xhr.responseText);
+				alert('Erro ao tentar pesquisar usu·rio por nome: ' + xhr.responseText);
 			}); 
 			
 		}
@@ -337,7 +393,7 @@
 	
 	
 	function prepararDeleteAjax() {		
-		if(confirm('Deseja excluir esse usu√°rio?')){			
+		if(confirm('Deseja excluir esse usu·rio?')){			
 			
 			console.log('dentro da funcao ajax');		
 			
@@ -359,14 +415,14 @@
 				
 									
 			}).fail(function(xhr, status, errorThrown){
-				alert('Erro ao tentar deletar usu√°rio por id: ' + xhr.responseText);
+				alert('Erro ao tentar deletar usu·rio por id: ' + xhr.responseText);
 			}); 
 		}
 	}
 		
 
 		function prepararDelete() {			
-			if(confirm('Deseja excluir esse usu√°rio sem ajax?')){
+			if(confirm('Deseja excluir esse usu·rio sem ajax?')){
 				document.getElementById("formUser").method = 'get';
 				document.getElementById("acao").value = 'deletar';
 				document.getElementById("formUser").submit();	
