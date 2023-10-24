@@ -377,7 +377,9 @@
 			var elementos = document.getElementById("formUser").elements;			
 			for (e = 0; e < elementos.length; e++){
 				elementos[e].value = '';
-			}			
+			}
+			
+			document.getElementById("fotoBase64").src="assets/images/avatar-1.jpg"
 		}
 	</script>
 </body>
