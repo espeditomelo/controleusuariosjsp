@@ -13,8 +13,10 @@ import model.ModelLogin;
 public class DAOUsuarioRepository {
 
 	private Connection conn;
+	
+	private final int LIMITEPAGINACAOCADASTRO = 5;
 
-	public DAOUsuarioRepository() {
+	public DAOUsuarioRepository() {	
 
 		conn = SingleConnectionBD.getConnection();
 	}
@@ -239,7 +241,7 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> lista = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * FROM model_login WHERE Nome like UPPER(?) and admin is false and id_cadastro = ?";
+		String sql = "SELECT * FROM model_login WHERE nome LIKE UPPER(?) and admin is false and id_cadastro = ? LIMIT " + LIMITEPAGINACAOCADASTRO;
 		PreparedStatement preparedStatement = conn.prepareStatement(sql);
 		preparedStatement.setString(1, "%" + nomePesquisa + "%");
 		preparedStatement.setLong(2, usuarioLogado);
@@ -299,7 +301,7 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> lista = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * FROM model_login where admin is false and id_cadastro = " + usuarioLogado + " order by nome";
+		String sql = "SELECT * FROM model_login where admin is false and id_cadastro = " +usuarioLogado+ " ORDER BY nome LIMIT " + LIMITEPAGINACAOCADASTRO;
 		PreparedStatement preparedStatement = conn.prepareStatement(sql);		
 		ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -321,5 +323,54 @@ public class DAOUsuarioRepository {
 		
 	}
 
+	
+	public List<ModelLogin> listarUsuariosPaginados(Long usuarioLogado, Integer paginacao) throws Exception {
+
+		List<ModelLogin> lista = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * FROM model_login where admin is false and id_cadastro = " + usuarioLogado + " ORDER BY NOME OFFSET " +paginacao+ " LIMIT " + LIMITEPAGINACAOCADASTRO;
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);		
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		while (resultSet.next()) {
+			
+			ModelLogin modelLogin = new ModelLogin();
+			
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			
+			lista.add(modelLogin);
+		}
+
+		return lista;
+		
+	}
+	
+	public int totalPaginas(Long usuarioLogado, Integer paginacao) throws Exception {
+		
+		String sql = "SELECT COUNT(1) as totalcadastros FROM model_login WHERE id_cadastro = " + usuarioLogado;
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);	
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		resultSet.next();
+		
+		Double totalCadastros = resultSet.getDouble("totalcadastros");
+				
+		Double qtdPaginas = totalCadastros / paginacao;
+		
+		Double resto = qtdPaginas % 2;
+		
+		if (resto > 0) {
+			qtdPaginas++;
+		}
+		
+		return qtdPaginas.intValue();
+	}
+	
 
 }
