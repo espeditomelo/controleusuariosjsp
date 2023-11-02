@@ -236,6 +236,30 @@ public class DAOUsuarioRepository {
 		preparedStatement.executeUpdate();
 		conn.commit();
 	}
+	
+	public int  pesquisarUsuarioTotalPaginaEPaginacao(String nomePesquisa, Long usuarioLogado) throws Exception {
+
+		String sql = "SELECT COUNT(1) as totalcadastros FROM model_login WHERE nome LIKE UPPER(?) AND admin IS FALSE AND id_cadastro = ? LIMIT " + LIMITEPAGINACAOCADASTRO;
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setString(1, "%" + nomePesquisa + "%");
+		preparedStatement.setLong(2, usuarioLogado);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		resultSet.next();
+		
+		Double totalCadastros = resultSet.getDouble("totalcadastros");
+				
+		Double qtdPaginas = totalCadastros / LIMITEPAGINACAOCADASTRO;
+		
+		Double resto = qtdPaginas % 2;
+		
+		if (resto > 0) {
+			qtdPaginas++;
+		}
+		
+		return qtdPaginas.intValue();
+	}
 
 	public List<ModelLogin> pesquisarUsuario(String nomePesquisa, Long usuarioLogado) throws Exception {
 

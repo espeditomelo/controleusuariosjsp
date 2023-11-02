@@ -288,7 +288,8 @@
 	        <div class="input-group mb-3">
 			  <input type="text" id="nomePesquisa" class="form-control" placeholder="Nome do usuário" aria-label="Nome do Usuário" aria-describedby="basic-addon2">
 			  <div class="input-group-append">
-			    <button class="btn btn-success" type="button" onclick="pesquisarUsuario();">Pesquisar</button>
+			    <!--  <button class="btn btn-success" type="button" onclick="pesquisarUsuario();">Pesquisar</button>-->
+			    <button class="btn btn-success" type="button" onclick="pesquisarUsuario()">Pesquisar</button>
 			  </div>
 			</div>			
 			
@@ -310,7 +311,13 @@
 			</table>				
 			</div>		
 			<br>
-			<span id="totalResultadoPesquisa"></span>
+			
+			<nav aria-label="Page navigation example">
+				<ul class="pagination" id="ulPaginacaoUsuarioAjax">
+				</ul>
+			</nav>
+
+				<span id="totalResultadoPesquisa"></span>
 	      </div>	      
 	      
 	      <div class="modal-footer">
@@ -370,7 +377,51 @@
 		
 	}
 	
+	function teste() {
+		alert("oi");
+	}
+	
+	function obterUsuarioPaginaAjax(url){
+		
+		var nomePesquisa = document.getElementById('nomePesquisa').value;		
+		var urlAction = document.getElementById('formUser').action;
+
+		
+		$.ajax({
+			
+			method: "get",
+			url: urlAction,
+			data: url,
+			success: function(response, textStatus, xhr) {
+				
+				var json = JSON.parse(response);
+				
+				$('#tabelaResultadoPesquisa > tbody > tr').remove();				
+				$('#ulPaginacaoUsuarioAjax > li').remove();
+				
+				for(var i = 0; i < json.length; i++){											
+					$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');					
+				}
+				
+				document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
+				
+				var totalPagina = xhr.getResponseHeader("totalPagina");
+				
+				for (var ii = 0; ii < totalPagina; ii++) {
+					
+					var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);						
+					$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
+				}
+			}
+			
+								
+		}).fail(function(xhr, status, errorThrown){
+			alert('Erro ao tentar pesquisar usuário por nome: ' + xhr.responseText);
+		}); 
+	}
+	
 	function pesquisarUsuario() {
+		
 		var nomePesquisa = document.getElementById('nomePesquisa').value;
 		
 		if (nomePesquisa != null && nomePesquisa != '' && nomePesquisa.trim() != '' ) {
@@ -382,19 +433,30 @@
 				method: "get",
 				url: urlAction,
 				data: "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjax",
-				success: function(response) {
+				success: function(response, textStatus, xhr) {
 					
 					var json = JSON.parse(response);
 					
-					$('#tabelaResultadoPesquisa > tbody > tr').remove();
+					$('#tabelaResultadoPesquisa > tbody > tr').remove();					
+					$('#ulPaginacaoUsuarioAjax > li').remove();
 					
-					for(var i = 0; i < json.length; i++){
-												
-						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');
-								document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
-						
+					for(var i = 0; i < json.length; i++){												
+						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');						
 					}
 					
+					document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
+					
+					var totalPagina = xhr.getResponseHeader("totalPagina");
+					
+					for (var ii = 0; ii < totalPagina; ii++) {
+						
+						
+						///var url = urlAction + "?nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
+						var url = urlAction + "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);						
+						
+						///$('#ulPaginacaoUsuarioAjax').append("<li class=\"page-item\"><a class=\"page-link\" onclick=obterUsuarioPaginaAjax("+url+")>"+(ii+1)+"</a></li>");
+						$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
+					}
 				}
 				
 									
@@ -404,6 +466,8 @@
 			
 		}
 	}
+	
+	
 	
 	
 	function prepararDeleteAjax() {		
