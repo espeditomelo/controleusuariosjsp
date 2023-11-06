@@ -377,47 +377,60 @@
 		
 	}
 	
-	function teste() {
-		alert("oi");
-	}
-	
+
 	function obterUsuarioPaginaAjax(url){
 		
-		var nomePesquisa = document.getElementById('nomePesquisa').value;		
-		var urlAction = document.getElementById('formUser').action;
-
+		//alert(url);
 		
-		$.ajax({
+		var nomePesquisa = document.getElementById('nomePesquisa').value;		
+		var urlAction = document.getElementById('formUser').action;		
+		
+		if (nomePesquisa != null && nomePesquisa != '' && nomePesquisa.trim() != '' ) {
+
+			$.ajax({				
+				
 			
-			method: "get",
-			url: urlAction,
-			data: url,
-			success: function(response, textStatus, xhr) {
-				
-				var json = JSON.parse(response);
-				
-				$('#tabelaResultadoPesquisa > tbody > tr').remove();				
-				$('#ulPaginacaoUsuarioAjax > li').remove();
-				
-				for(var i = 0; i < json.length; i++){											
-					$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');					
-				}
-				
-				document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
-				
-				var totalPagina = xhr.getResponseHeader("totalPagina");
-				
-				for (var ii = 0; ii < totalPagina; ii++) {
+				method: "get",
+				url: urlAction,
+				data: url,
+				success: function(response, textStatus, xhr) {
 					
-					var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);						
-					$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
+					var json = JSON.parse(response);
+					
+					$('#tabelaResultadoPesquisa > tbody > tr').remove();				
+					$('#ulPaginacaoUsuarioAjax > li').remove();
+					
+					for(var i = 0; i < json.length; i++){											
+						$('#tabelaResultadoPesquisa > tbody').append('<tr> <td>'+json[i].id+'</td>  <td>'+json[i].nome+'</td>  <td>'+json[i].perfil+'</td> <td>'+json[i].sexo+'</td>  <td> <button type="button" onclick="verUsuarioSelecionado('+json[i].id+');" class="btn btn-primary btn-round waves-effect waves-light">Ver</button> </td>  </tr>');					
+					}
+					
+					document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
+					
+					var totalPaginas = xhr.getResponseHeader("totalPaginas");
+					
+					for (var ii = 0; ii < totalPaginas; ii++) {										
+												
+						//var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
+						var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&pagina="+ (ii * 5);
+						
+						/*alert(url);
+						
+						alert('totalPaginas do obterUsuarioPaginaAjax ' + totalPaginas);
+											
+						alert(ii * 5);*/
+						
+						$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
+					}
 				}
-			}
-			
-								
-		}).fail(function(xhr, status, errorThrown){
-			alert('Erro ao tentar pesquisar usuário por nome: ' + xhr.responseText);
-		}); 
+				
+									
+			}).fail(function(xhr, status, errorThrown){
+				alert('Erro ao tentar pesquisar usuário por nome: ' + xhr.responseText);
+			});
+		} else {
+			alert('nomePesquisa é ' + nomePesquisa);
+		}	
+		 
 	}
 	
 	function pesquisarUsuario() {
@@ -446,15 +459,18 @@
 					
 					document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
 					
-					var totalPagina = xhr.getResponseHeader("totalPagina");
+					var totalPaginas = xhr.getResponseHeader("totalPaginas");						
 					
-					for (var ii = 0; ii < totalPagina; ii++) {
+						
+						//alert('totalPaginas do pesquisarUsuario ' + totalPaginas);
+					
 						
 						
-						///var url = urlAction + "?nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
-						var url = urlAction + "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);						
+					for (var ii = 0; ii < totalPaginas; ii++) {
 						
-						///$('#ulPaginacaoUsuarioAjax').append("<li class=\"page-item\"><a class=\"page-link\" onclick=obterUsuarioPaginaAjax("+url+")>"+(ii+1)+"</a></li>");
+						//var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
+						var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&pagina="+ (ii * 5);
+						
 						$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
 					}
 				}

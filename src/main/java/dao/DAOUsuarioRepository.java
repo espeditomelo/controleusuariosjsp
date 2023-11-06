@@ -396,5 +396,32 @@ public class DAOUsuarioRepository {
 		return qtdPaginas.intValue();
 	}
 	
+	public List<ModelLogin> pesquisarUsuarioOffSet(String nomePesquisa, Long usuarioLogado, int offSet) throws Exception {
+
+		List<ModelLogin> lista = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * FROM model_login WHERE nome LIKE UPPER(?) and admin is false and id_cadastro = ? ORDER BY NOME OFFSET ? LIMIT " + LIMITEPAGINACAOCADASTRO;
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setString(1, "%" + nomePesquisa + "%");
+		preparedStatement.setLong(2, usuarioLogado);
+		preparedStatement.setInt(3, offSet);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		while (resultSet.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			
+			lista.add(modelLogin);
+		}
+
+		return lista;
+	}
+	
 
 }

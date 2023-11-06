@@ -59,28 +59,30 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				response.getWriter().write("Usuario execluido com sucesso.");
 								
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("PesquisarUsuarioAjax")) {
-				String nomePesquisa = request.getParameter("nomePesquisa");
+				String nomePesquisa = request.getParameter("nomePesquisa");								
+				
 				List<ModelLogin> lista = daoUsuarioRepository.pesquisarUsuario(nomePesquisa, super.getUsuarioLogado(request));
 				
 				ObjectMapper objectMapper = new ObjectMapper();
 				String jsonNomePesquisa = objectMapper.writeValueAsString(lista);
 				
-				response.addHeader("totalPagina", ""+daoUsuarioRepository.pesquisarUsuarioTotalPaginaEPaginacao(nomePesquisa, super.getUsuarioLogado(request)));
+				response.addHeader("totalPaginas", ""+daoUsuarioRepository.pesquisarUsuarioTotalPaginaEPaginacao(nomePesquisa, super.getUsuarioLogado(request)));
 				response.getWriter().write(jsonNomePesquisa);				
 			
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("PesquisarUsuarioAjaxPage")) {
+			//} else if (acao.equalsIgnoreCase("PesquisarUsuarioAjaxPage")) {
 				
 				String nomePesquisa = request.getParameter("nomePesquisa");
 				
-				String totalPagina = request.getParameter("totalPagina");
+				String pagina = request.getParameter("pagina");
 				
-				List<ModelLogin> lista = daoUsuarioRepository.pesquisarUsuario(nomePesquisa, super.getUsuarioLogado(request));
-				
+				List<ModelLogin> lista = daoUsuarioRepository.pesquisarUsuarioOffSet(nomePesquisa, super.getUsuarioLogado(request), Integer.parseInt(pagina));
+								
 				ObjectMapper objectMapper = new ObjectMapper();
 				String jsonNomePesquisa = objectMapper.writeValueAsString(lista);
 				
-				response.addHeader("totalPagina", ""+daoUsuarioRepository.pesquisarUsuarioTotalPaginaEPaginacao(nomePesquisa, super.getUsuarioLogado(request)));
+				response.addHeader("totalPaginas", ""+daoUsuarioRepository.pesquisarUsuarioTotalPaginaEPaginacao(nomePesquisa, super.getUsuarioLogado(request)));
 				response.getWriter().write(jsonNomePesquisa);
 			
 				
