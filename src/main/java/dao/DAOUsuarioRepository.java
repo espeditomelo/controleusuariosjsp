@@ -17,7 +17,6 @@ public class DAOUsuarioRepository {
 	private final int LIMITEPAGINACAOCADASTRO = 5;
 
 	public DAOUsuarioRepository() {	
-
 		conn = SingleConnectionBD.getConnection();
 	}
 
@@ -25,7 +24,6 @@ public class DAOUsuarioRepository {
 
 		if (modelLogin.isNovo()) {
 		
-			//String sql = "INSERT INTO public.model_login (login, senha, nome, email, id_cadastro, perfil, sexo, cep, logradouro, bairro, cidade, uf, numero) VALUES(UPPER(?), UPPER(?), UPPER(?), UPPER(?), ?, ?, ?)";
 			String sql = "INSERT INTO public.model_login (login, senha, nome, email, id_cadastro, perfil, sexo, cep, logradouro, bairro, cidade, uf, numero) VALUES(UPPER(?), UPPER(?), UPPER(?), UPPER(?), ?, UPPER(?), UPPER(?), UPPER(?), UPPER(?), UPPER(?), UPPER(?), UPPER(?), UPPER(?))";
 
 			PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -67,7 +65,6 @@ public class DAOUsuarioRepository {
 
 		} else {
 			
-			//String sql = "UPDATE model_login SET login=UPPER(?), senha=UPPER(?), nome=UPPER(?), email=UPPER(?), perfil=? , sexo=? WHERE id= '" +  modelLogin.getId() + "';";
 			String sql = "UPDATE model_login SET login=UPPER(?), senha=UPPER(?), nome=UPPER(?), email=UPPER(?), perfil=UPPER(?) , sexo=UPPER(?), cep=UPPER(?), logradouro=UPPER(?), bairro=UPPER(?), cidade=UPPER(?), uf=UPPER(?), numero=UPPER(?) WHERE id= '" +  modelLogin.getId() + "';";
 
 			PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -158,7 +155,6 @@ public class DAOUsuarioRepository {
 
 		ResultSet resultSet = preparedStatement.executeQuery();
 
-		//if (resultSet.next()) {
 		while (resultSet.next()) {
 			modelLogin.setId(resultSet.getLong("id"));
 			modelLogin.setNome(resultSet.getString("nome"));
@@ -423,5 +419,37 @@ public class DAOUsuarioRepository {
 		return lista;
 	}
 	
+	public ModelLogin consultarUsuarioId(Long id) throws SQLException {
+
+		ModelLogin modelLogin = new ModelLogin();
+		
+		String sql = "SELECT * FROM model_login WHERE id = ? and admin is false";
+
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+		preparedStatement.setLong(1, id);
+
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		if (resultSet.next()) {
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setSenha(resultSet.getString("senha"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));			
+			modelLogin.setFotoUsuario(resultSet.getString("fotousuario"));
+			modelLogin.setExtensaoFotoUsuario(resultSet.getString("extensaofotousuario"));
+			
+			modelLogin.setCep(resultSet.getString("cep"));
+			modelLogin.setLogradouro(resultSet.getString("logradouro"));
+			modelLogin.setBairro(resultSet.getString("bairro"));
+			modelLogin.setCidade(resultSet.getString("cidade"));
+			modelLogin.setUf(resultSet.getString("uf"));
+			modelLogin.setNumero(resultSet.getString("numero"));
+		}
+		return modelLogin;		
+	}
 
 }
