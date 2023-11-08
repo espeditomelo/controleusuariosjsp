@@ -49,7 +49,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				
 				request.setAttribute("msg", "Usuario execluido com sucesso.");
 				
-					request.setAttribute("totalPaginas", daoUsuarioRepository.totalPaginas(this.getUsuarioLogado(request), 5));
+				request.setAttribute("totalPaginas", daoUsuarioRepository.totalPaginas(this.getUsuarioLogado(request), 5));
 				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				

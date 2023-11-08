@@ -209,6 +209,10 @@
 																	class="btn btn-primary btn-round waves-effect waves-light" onclick="prepararDeleteAjax();">Excluir</button>
 																<button type="button"
 																	class="btn btn-primary btn-round waves-effect waves-light" data-toggle="modal" data-target="#pesquisarModal">Pesquisar</button>
+																
+																<c:if test="${modelLogin.id > 0}">
+																	<a href="<%= request.getContextPath() %>/ServletTelefone?idUsuario=${modelLogin.id}" class="btn btn-primary btn-round waves-effect waves-light">Telefone</a>
+																</c:if>	
 															</div>
 
 														</form>
