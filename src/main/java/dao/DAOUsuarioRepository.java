@@ -279,7 +279,7 @@ public class DAOUsuarioRepository {
 			
 			lista.add(modelLogin);
 		}
-
+ 
 		return lista;
 	}
 	

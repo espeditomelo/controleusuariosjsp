@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class DAOTelefoneRepository {
 	
 	private Connection conn;
 	
-	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository(); 
 
 	public DAOTelefoneRepository() {
 		conn =  SingleConnectionBD.getConnection();		
@@ -34,15 +35,8 @@ public class DAOTelefoneRepository {
 		
 		conn.commit();		
 	}
-	
-	public void removerTelefone(Long id) throws Exception {
-		String sql =  "DELETE FROM model_telefone WHERE id = ?";
-		PreparedStatement preparedStatement = conn.prepareStatement(sql);
-		preparedStatement.setLong(1, id);
-		preparedStatement.executeUpdate();
-		conn.commit();
-	}
-	
+
+
 	public List<ModelTelefone> listarTelefone(Long idUsuario) throws Exception{
 		
 		List<ModelTelefone> listaTelefones = new ArrayList<ModelTelefone>();
@@ -68,6 +62,15 @@ public class DAOTelefoneRepository {
 		}
 		
 		return listaTelefones;
+	}
+	
+	
+	public void deletarTelefone(Long id) throws SQLException {
+		String sql = "DELETE FROM model_telefone WHERE id = ?";
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setLong(1, id);
+		preparedStatement.executeUpdate();
+		conn.commit();
 	}
 
 }

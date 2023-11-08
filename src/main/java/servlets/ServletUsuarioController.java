@@ -36,6 +36,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			
 			String acao = request.getParameter("acao");		
 			
 			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
@@ -152,7 +153,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		try {
+		try { 
 			
 			String msg = "Operação realizada com sucesso.";
 
