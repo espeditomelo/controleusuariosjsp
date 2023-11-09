@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -88,7 +90,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("pesquisarParaEditar")) {						
+				
 				String id = request.getParameter("id");				
+				
 				ModelLogin modelLogin = daoUsuarioRepository.consultarUsuarioId(id, super.getUsuarioLogado(request));	
 				
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios(super.getUsuarioLogado(request));
@@ -96,9 +100,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("listaUsuarios", listaUsuarios);
 				
 				request.setAttribute("msg", "Usuário em edição");
+				
 				request.setAttribute("modelLogin", modelLogin);
 				
-					request.setAttribute("totalPaginas", daoUsuarioRepository.totalPaginas(this.getUsuarioLogado(request), 5));
+				request.setAttribute("totalPaginas", daoUsuarioRepository.totalPaginas(this.getUsuarioLogado(request), 5));
 				
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);				
 				
@@ -163,14 +168,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			String perfil = request.getParameter("perfil");
-			String sexo = request.getParameter("genero");
-			
+			String sexo = request.getParameter("genero");			
 			String cep = request.getParameter("cep");
 			String logradouro = request.getParameter("logradouro");
 			String bairro = request.getParameter("bairro");
 			String cidade = request.getParameter("cidade");
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
+			
+			String dataNascimento = request.getParameter("dataNascimento");
 
 			ModelLogin modelLogin = new ModelLogin();
 			
@@ -180,14 +186,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
 			modelLogin.setPerfil(perfil);
-			modelLogin.setSexo(sexo);
-			
+			modelLogin.setSexo(sexo);			
 			modelLogin.setCep(cep);
 			modelLogin.setLogradouro(logradouro);
 			modelLogin.setBairro(bairro);
 			modelLogin.setCidade(cidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
+			
+			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
 						
 					
 			if(ServletFileUpload.isMultipartContent(request)) {

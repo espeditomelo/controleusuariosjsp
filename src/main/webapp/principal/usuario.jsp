@@ -79,12 +79,19 @@
 																	class="form-control" required="required" value="${modelLogin.nome}"> <span
 																	class="form-bar"></span> <label class="float-label">Nome</label>
 															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="dataNascimento" id="dataNascimento"
+																	class="form-control" required="required" value="${modelLogin.dataNascimento}"> <span
+																	class="form-bar"></span> <label class="float-label">Data Nascimento</label>
+															</div>															
+															
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
 																	class="form-control" required="required"
 																	autocomplete="off" value="${modelLogin.email}"> <span class="form-bar"></span>
 																<label class="float-label">Email (exa@gmail.com)</label>
-															</div>
+															</div>																													
 															
 															<div class="form-group form-default form-static-label">
 																<select class="form-control"
@@ -336,6 +343,15 @@
 	
 	<script type="text/javascript">
 	
+	$("#cep").keypress(function (event) {
+		return /\d/.test(String.fromCharCode(event.keyCode));
+	});
+	
+	
+	$("#numero").keypress(function (event) {
+		return /\d/.test(String.fromCharCode(event.keyCode));
+	});
+	
 	function pesquisarCep() {
 		var cep = $("#cep").val();
 		
@@ -535,7 +551,24 @@
 			
 			document.getElementById("fotoBase64").src="assets/images/avatar-1.jpg"
 		}
-	</script>
+		
+		
+		$( function() {			
+			$("#dataNascimento").datepicker({
+				dateFormat: 'dd/mm/yy',
+				dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
+				dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
+				dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
+				monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+				monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
+				nextText: 'Próximo',
+				prevText: 'Anterior'
+			});			
+		});
+		
+		
+	</script>	
+	
 </body>
 
 </html>
