@@ -84,7 +84,13 @@
 																<input type="text" name="dataNascimento" id="dataNascimento"
 																	class="form-control" required="required" value="${modelLogin.dataNascimento}"> <span
 																	class="form-bar"></span> <label class="float-label">Data Nascimento</label>
-															</div>															
+															</div>
+															
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="rendaMensal" id="rendaMensal"
+																	class="form-control" required="required" value="${modelLogin.rendaMensal}"> <span
+																	class="form-bar"></span> <label class="float-label">Renda Mensal</label>
+															</div>																	
 															
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
@@ -250,7 +256,6 @@
 															<td><c:out value="${lU.nome}"></c:out></td>
 															<td><c:out value="${lU.perfil}"></c:out></td>
 															<td><c:out value="${lU.sexo}"></c:out></td>
-															<!-- <td> <button type="button" class="btn btn-primary btn-round waves-effect waves-light">Ver</button></td> --> 
 															<td><a class="btn btn-primary btn-round waves-effect waves-light" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=pesquisarParaEditar&id=${lU.id}">Ver</a></td>
 															
 														</tr>														
@@ -480,15 +485,9 @@
 					document.getElementById('totalResultadoPesquisa').textContent = 'Total de Usuários pesquisados: ' + json.length;
 					
 					var totalPaginas = xhr.getResponseHeader("totalPaginas");						
-					
-						
-						//alert('totalPaginas do pesquisarUsuario ' + totalPaginas);
-					
-						
 						
 					for (var ii = 0; ii < totalPaginas; ii++) {
 						
-						//var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
 						var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&pagina="+ (ii * 5);
 						
 						$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
@@ -565,6 +564,9 @@
 				prevText: 'Anterior'
 			});			
 		});
+		
+		
+		$("#rendaMensal").maskMoney({showSymbol:true, symbol:"R$ ", decimal:",", thousands:"."});
 		
 		
 	</script>	

@@ -74,7 +74,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("PesquisarUsuarioAjaxPage")) {
-			//} else if (acao.equalsIgnoreCase("PesquisarUsuarioAjaxPage")) {
 				
 				String nomePesquisa = request.getParameter("nomePesquisa");
 				
@@ -177,6 +176,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String numero = request.getParameter("numero");
 			
 			String dataNascimento = request.getParameter("dataNascimento");
+			
+			String rendaMensal = request.getParameter("rendaMensal");
+			
+			rendaMensal = rendaMensal.split("\\$ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");		
 
 			ModelLogin modelLogin = new ModelLogin();
 			
@@ -192,10 +195,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setBairro(bairro);
 			modelLogin.setCidade(cidade);
 			modelLogin.setUf(uf);
-			modelLogin.setNumero(numero);
+			modelLogin.setNumero(numero);					
 			
 			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
-						
+			
+			modelLogin.setRendaMensal(Double.valueOf(rendaMensal));			
+			
 					
 			if(ServletFileUpload.isMultipartContent(request)) {
 						
