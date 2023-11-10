@@ -72,5 +72,21 @@ public class DAOTelefoneRepository {
 		preparedStatement.executeUpdate();
 		conn.commit();
 	}
+	
+	public boolean existeTelefone(String numero, Long idUsuario) throws SQLException {
+		
+		String sql = "SELECT COUNT(1) > 0 AS existeNumero FROM model_telefone WHERE numero = ? AND id_usuario = ?";
+		
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		
+		preparedStatement.setString(1, numero);
+		preparedStatement.setLong(2, idUsuario);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		resultSet.next();	
+		
+		return resultSet.getBoolean("existeNumero");
+	}
 
 }
