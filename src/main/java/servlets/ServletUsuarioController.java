@@ -136,6 +136,24 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("totalPaginas", daoUsuarioRepository.totalPaginas(this.getUsuarioLogado(request), 5));			
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
+			} 
+			
+			
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUsuario")) {
+
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					request.setAttribute("listaUsuarios", daoUsuarioRepository.listarTodosUsuarios(this.getUsuarioLogado(request)));
+				}
+				
+				request.setAttribute("dataInicial", dataInicial);
+				request.setAttribute("dataFinal", dataFinal);
+				
+				request.getRequestDispatcher("principal/relatoriousuario.jsp").forward(request, response);
+				
 			} else {			
 			
 				List<ModelLogin> listaUsuarios = daoUsuarioRepository.listarUsuarios(super.getUsuarioLogado(request));
