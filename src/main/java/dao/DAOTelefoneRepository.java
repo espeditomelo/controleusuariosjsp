@@ -14,11 +14,11 @@ public class DAOTelefoneRepository {
 	
 	private Connection conn;
 	
-	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository(); 
-
 	public DAOTelefoneRepository() {
 		conn =  SingleConnectionBD.getConnection();		
 	}
+	
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 	
 	
 	public void gravarTelefone(ModelTelefone modelTelefone) throws Exception {	
@@ -54,7 +54,8 @@ public class DAOTelefoneRepository {
 			ModelTelefone modelTelefone = new ModelTelefone();
 			
 			modelTelefone.setId(resultSet.getLong("id"));
-			modelTelefone.setNumero(resultSet.getString("numero"));			
+			modelTelefone.setNumero(resultSet.getString("numero"));		
+
 			modelTelefone.setIdUsuario(daoUsuarioRepository.consultarUsuarioId(resultSet.getLong("id_usuario")));
 			modelTelefone.setIdCadastro(daoUsuarioRepository.consultarUsuarioId(resultSet.getLong("id_cadastro")));
 			

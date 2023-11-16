@@ -38,6 +38,7 @@
 
 										<div class="row">
 											<div class="col-sm-12">
+											
 												<!-- Basic Form Inputs card start -->
 												<div class="card">
 
@@ -72,8 +73,7 @@
 
 														<div style="height: 300px; overflow: scroll">
 														
-														alert("na table");
-														
+																												
 															<table id="tabelaListaUsuarios"
 																class="table table-striped">
 																<thead>
@@ -91,7 +91,15 @@
 																			<td><c:out value="${lU.nome}"></c:out></td>
 																			<td><c:out value="${lU.perfil}"></c:out></td>
 																			<td><c:out value="${lU.sexo}"></c:out></td>
-																		</tr>
+																			</tr>
+																																					
+																				<c:forEach items="${lU.telefones}" var="lT">
+																					<tr>
+																						<td><c:out value="${lT.numero}"></c:out></td>
+																					</tr>
+																					
+																				</c:forEach>
+																	
 																	</c:forEach>
 																</tbody>
 															</table>

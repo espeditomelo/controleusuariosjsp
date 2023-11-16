@@ -9,13 +9,14 @@ import java.util.List;
 
 import connection.SingleConnectionBD;
 import model.ModelLogin;
+import model.ModelTelefone;
 
 public class DAOUsuarioRepository {
 
 	private Connection conn;
 	
 	private final int LIMITEPAGINACAOCADASTRO = 5;
-
+	
 	public DAOUsuarioRepository() {	
 		conn = SingleConnectionBD.getConnection();
 	}
@@ -488,11 +489,41 @@ public class DAOUsuarioRepository {
 			modelLogin.setDataNascimento(resultSet.getDate("datanascimento"));			
 			modelLogin.setRendaMensal(resultSet.getDouble("rendamensal"));
 			
+			modelLogin.setTelefones(this.listarTelefonesPorID(modelLogin.getId()));
+			
 			lista.add(modelLogin);
 		}
 
-		return lista;
+		return lista;		
+	}
+	
+	
+	public List<ModelTelefone> listarTelefonesPorID(Long idUsuario) throws Exception{
 		
+		List<ModelTelefone> listaTelefonesPorId = new ArrayList<ModelTelefone>();
+		
+		String sql = "SELECT * FROM model_telefone WHERE id_usuario = ?";
+		
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, idUsuario);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		while(resultSet.next()) {
+			
+			ModelTelefone modelTelefone = new ModelTelefone();
+			
+			modelTelefone.setId(resultSet.getLong("id"));
+			modelTelefone.setNumero(resultSet.getString("numero"));		
+
+			modelTelefone.setIdUsuario(this.consultarUsuarioId(resultSet.getLong("id_usuario")));
+			modelTelefone.setIdCadastro(this.consultarUsuarioId(resultSet.getLong("id_cadastro")));
+			
+			listaTelefonesPorId.add(modelTelefone);
+		}
+		
+		return listaTelefonesPorId;
 	}
 	
 
