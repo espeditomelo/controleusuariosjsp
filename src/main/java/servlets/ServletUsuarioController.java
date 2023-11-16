@@ -137,16 +137,18 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				
 			} 
-			
-			
+						
 			
 			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUsuario")) {
-
-				String dataInicial = request.getParameter("dataInicial");
-				String dataFinal = request.getParameter("dataFinal");
+				
+				String dataInicial = request.getParameter("dataInicial");												
+				String dataFinal = request.getParameter("dataFinal");				
+				
 
 				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
 					request.setAttribute("listaUsuarios", daoUsuarioRepository.listarTodosUsuarios(this.getUsuarioLogado(request)));
+				} else {
+					request.setAttribute("listaUsuarios", daoUsuarioRepository.listarTodosUsuariosPorDataNascimento(this.getUsuarioLogado(request), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal)))));
 				}
 				
 				request.setAttribute("dataInicial", dataInicial);

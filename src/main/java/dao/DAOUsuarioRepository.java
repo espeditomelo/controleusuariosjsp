@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -524,6 +525,40 @@ public class DAOUsuarioRepository {
 		}
 		
 		return listaTelefonesPorId;
+	}
+	
+	public List<ModelLogin> listarTodosUsuariosPorDataNascimento(Long usuarioLogado, Date dataInicial, Date dataFinal) throws Exception {
+
+		List<ModelLogin> lista = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * FROM model_login where admin is false and id_cadastro = " +usuarioLogado+ " AND datanascimento  BETWEEN ? and ? ORDER BY nome";
+		
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);	
+		
+		preparedStatement.setDate(1, dataInicial);
+		preparedStatement.setDate(2, dataFinal);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		while (resultSet.next()) {
+			
+			ModelLogin modelLogin = new ModelLogin();
+			
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));			
+			modelLogin.setDataNascimento(resultSet.getDate("datanascimento"));			
+			modelLogin.setRendaMensal(resultSet.getDouble("rendamensal"));
+			
+			modelLogin.setTelefones(this.listarTelefonesPorID(modelLogin.getId()));
+			
+			lista.add(modelLogin);
+		}
+
+		return lista;		
 	}
 	
 

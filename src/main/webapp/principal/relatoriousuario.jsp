@@ -90,15 +90,14 @@
 																			<td><c:out value="${lU.id}"></c:out></td>
 																			<td><c:out value="${lU.nome}"></c:out></td>
 																			<td><c:out value="${lU.perfil}"></c:out></td>
-																			<td><c:out value="${lU.sexo}"></c:out></td>
-																			</tr>
-																																					
-																				<c:forEach items="${lU.telefones}" var="lT">
-																					<tr>
-																						<td><c:out value="${lT.numero}"></c:out></td>
-																					</tr>
-																					
-																				</c:forEach>
+																			<td><c:out value="${lU.sexo}"></c:out></td>																		
+																		</tr>
+																																		
+																			<c:forEach items="${lU.telefones}" var="lT">
+																				<tr>
+																					<td><c:out value="${lT.numero}"></c:out></td>
+																				</tr>																					
+																			</c:forEach>
 																	
 																	</c:forEach>
 																</tbody>
