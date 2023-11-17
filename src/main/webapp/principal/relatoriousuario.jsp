@@ -50,7 +50,7 @@
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="get" id="formUser">
 															
-															<input type="hidden" name="acao" value="imprimirRelatorioUsuario">
+															<input type="hidden" id="acaoRelatorio" name="acao" value="imprimirRelatorioUsuario">
 
 															<div>
 																<input type="text" name="dataInicial" id="dataInicial"
@@ -65,8 +65,12 @@
 															</div>
 
 															<div>
-																<button type="submit"
-																	class="btn btn-primary btn-round waves-effect waves-light">Imprimir</button>
+															
+																<button type="button" onclick="imprimirEmTela()"
+																	class="btn btn-primary btn-round waves-effect waves-light">Imprimir em Tela</button>
+																	
+																<button type="button" onclick="imprimirEmPDF()"
+																	class="btn btn-primary btn-round waves-effect waves-light">Imprimir em PDF</button>
 															</div>
 
 														</form>
@@ -168,8 +172,20 @@
 								prevText : 'Anterior'
 							});
 		});
+		
+		
+		function imprimirEmTela() {
+			document.getElementById("acaoRelatorio").value = 'imprimirRelatorioUsuario';
+			$("#formUser").submit();
+		}
+		
+		function imprimirEmPDF() {
+			document.getElementById("acaoRelatorio").value = 'imprimirRelatorioUsuarioPDF';
+			$("#formUser").submit();
+		}
+		
+		
 	</script>
-
 
 </body>
 

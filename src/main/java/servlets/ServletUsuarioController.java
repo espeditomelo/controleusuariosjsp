@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import model.ModelLogin;
+import util.ReportUtil;
 
 
 
@@ -155,6 +156,30 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("dataFinal", dataFinal);
 				
 				request.getRequestDispatcher("principal/relatoriousuario.jsp").forward(request, response);
+				
+			} 
+			
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUsuarioPDF")) {
+				
+				String dataInicial = request.getParameter("dataInicial");												
+				String dataFinal = request.getParameter("dataFinal");				
+				
+				List<ModelLogin> modelLogins = null;
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					
+					modelLogins = daoUsuarioRepository.listarTodosUsuarios(this.getUsuarioLogado(request));
+					
+				} else {
+					
+					modelLogins = daoUsuarioRepository.listarTodosUsuariosPorDataNascimento(this.getUsuarioLogado(request), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+				}
+				
+				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "relatorio-users-jsp", request.getServletContext());
+				
+				response.setHeader("Content-Disposition", "attachment;filename=relatoriousuario.pdf");
+				response.getOutputStream().write(relatorio);
+
 				
 			} else {			
 			
