@@ -71,6 +71,9 @@
 																	
 																<button type="button" onclick="imprimirEmPDF()"
 																	class="btn btn-primary btn-round waves-effect waves-light">Imprimir em PDF</button>
+																	
+																<button type="button" onclick="imprimirEmXLS()"
+																	class="btn btn-primary btn-round waves-effect waves-light">Imprimir em XLS</button>
 															</div>
 
 														</form>
@@ -184,6 +187,10 @@
 			$("#formUser").submit();
 		}
 		
+		function imprimirEmXLS() {
+			document.getElementById("acaoRelatorio").value = 'imprimirRelatorioUsuarioXLS';
+			$("#formUser").submit();
+		}
 		
 	</script>
 
