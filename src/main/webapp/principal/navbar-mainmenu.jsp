@@ -75,6 +75,13 @@
                                       <span class="pcoded-mcaret"></span>
                                   </a>
                               </li>
+                              <li>
+                                  <a href="<%= request.getContextPath() %>/principal/relatoriograficousuario.jsp" class="waves-effect waves-dark">
+                                      <span class="pcoded-micon"><i class="ti-layers"></i><b>FC</b></span>
+                                      <span class="pcoded-mtext" data-i18n="nav.form-components.main">Gráfico de Salários</span>
+                                      <span class="pcoded-mcaret"></span>
+                                  </a>
+                              </li>
                           </ul>    
                       </div>
                   </nav>

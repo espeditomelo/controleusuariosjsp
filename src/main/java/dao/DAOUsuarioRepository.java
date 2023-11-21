@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import beandto.BeanDTOPerfilSalarioParaGrafico;
 import connection.SingleConnectionBD;
 import model.ModelLogin;
 import model.ModelTelefone;
@@ -559,6 +560,35 @@ public class DAOUsuarioRepository {
 		}
 
 		return lista;		
+	}
+	
+
+	public BeanDTOPerfilSalarioParaGrafico listarPerfilseSalariosParaGrafico(Long usuarioLogado) throws Exception {
+		
+		String sql = "SELECT AVG(rendamensal) as mediasalarial, perfil FROM model_login WHERE id_cadastro = ? GROUP BY perfil";
+		
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, usuarioLogado);
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		List<Double> listaMediaSalarial = new ArrayList<Double>();
+		List<String> listaPerfil = new ArrayList<String>();
+		
+		BeanDTOPerfilSalarioParaGrafico beanDTOPerfilSalarioParaGrafico = new BeanDTOPerfilSalarioParaGrafico();
+		
+		while (resultSet.next()) {
+			
+			listaMediaSalarial.add(resultSet.getDouble("mediasalarial"));
+			listaPerfil.add(resultSet.getString("perfil"));
+		}
+		
+		beanDTOPerfilSalarioParaGrafico.setListaMediaSalarial(listaMediaSalarial);
+		beanDTOPerfilSalarioParaGrafico.setListaPerfil(listaPerfil);
+		
+		return beanDTOPerfilSalarioParaGrafico; 		
+		
 	}
 	
 
