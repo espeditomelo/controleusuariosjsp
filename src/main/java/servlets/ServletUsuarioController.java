@@ -1,6 +1,5 @@
 package servlets;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -21,6 +20,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beandto.BeanDTOPerfilSalarioParaGrafico;
 import dao.DAOUsuarioRepository;
 import model.ModelLogin;
 import util.ReportUtil;
@@ -178,11 +178,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					modelLogins = daoUsuarioRepository.listarTodosUsuariosPorDataNascimento(this.getUsuarioLogado(request), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))), Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
 				}
 				
-				//HashMap<String, Object> params = new HashMap<String, Object>();
-				
-				//params.put( null , request.getServletContext().getRealPath("relatorio") + File.separator);
-				
-				
 				Map params = new HashMap();
 				
 				byte[] relatorio = null;
@@ -196,11 +191,30 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					relatorio = new ReportUtil().geraRelatorioXLS(modelLogins, "relatorio-users-jsp", params, request.getServletContext());
 					extensao = "xls";
 				}
-				
-				
+								
 				response.setHeader("Content-Disposition", "attachment;filename=relatoriousuario." + extensao);
 				response.getOutputStream().write(relatorio);
-
+				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("relatorioGraficoUsuario")) {
+			
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+				
+				BeanDTOPerfilSalarioParaGrafico beanDTOPerfilSalarioParaGrafico = new BeanDTOPerfilSalarioParaGrafico();
+				
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					
+					beanDTOPerfilSalarioParaGrafico = daoUsuarioRepository.listarPerfilseSalariosParaGrafico(super.getUsuarioLogado(request));
+					
+				} else {
+										
+					
+				}
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+				String json = objectMapper.writeValueAsString(beanDTOPerfilSalarioParaGrafico);				
+				response.getWriter().write(json);
+				
 				
 			} else {			
 			

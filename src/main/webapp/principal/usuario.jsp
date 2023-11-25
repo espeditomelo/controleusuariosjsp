@@ -435,14 +435,7 @@
 					
 					for (var ii = 0; ii < totalPaginas; ii++) {										
 												
-						//var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&Pagina="+ (ii * 5);
 						var url = "nomePesquisa=" + nomePesquisa + "&acao=PesquisarUsuarioAjaxPage&pagina="+ (ii * 5);
-						
-						/*alert(url);
-						
-						alert('totalPaginas do obterUsuarioPaginaAjax ' + totalPaginas);
-											
-						alert(ii * 5);*/
 						
 						$('#ulPaginacaoUsuarioAjax').append('<li class="page-item"><a class="page-link" href="#" onclick="obterUsuarioPaginaAjax(\''+url+'\')">'+ (ii+1) +'</a></li>');
 					}
@@ -507,8 +500,6 @@
 	
 	function prepararDeleteAjax() {		
 		if(confirm('Deseja excluir esse usuário?')){			
-			
-			console.log('dentro da funcao ajax');		
 			
 			var urlAction = document.getElementById('formUser').action;
 			var idUser = document.getElementById('id').value;

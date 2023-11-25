@@ -50,10 +50,22 @@
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="get" id="formUser">
 															
-															<input type="hidden" id="acaoRelatorio" name="acao" value="imprimirRelatorioUsuario">
+															<input type="hidden" id="acaoRelatorio" name="acao" value="relatorioGraficoUsuario">
 
 															<div>
-																	
+																<input type="text" name="dataInicial" id="dataInicial"
+																	class="form-control" autocomplete="off"
+																	value=${dataInicial}> <span class="form-bar"></span>
+																<label>Data Inicial</label>
+															</div>
+															<div>
+																<input type="text" name="dataFinal" id="dataFinal"
+																	class="form-control" autocomplete="off"
+																	value=${dataFinal}> <span class="form-bar"></span>
+																<label>Data Final</label>
+															</div>
+
+															<div>																	
 																<button type="button" onclick="gerarGrafico()"
 																	class="btn btn-primary btn-round waves-effect waves-light">Gerar Gráfico</button>
 															</div>
@@ -138,31 +150,44 @@
 		
 			
 		function gerarGrafico() {
-			var myChart = new Chart(
-				    document.getElementById('myChart'),
-				    {
-						  type: 'line',
-						  data: {
-							  labels: [
-								  'January',
-								  'February',
-								  'March',
-								  'April',
-								  'May',
-								  'June',
-								],
-							  datasets: [{
-							    label: 'Gráfico de Salários',
-							    backgroundColor: 'rgb(255, 99, 132)',
-							    borderColor: 'rgb(255, 99, 132)',
-							    data: [0, 10, 5, 2, 20, 30, 45],
-							  }]
+			
+			var urlAction = document.getElementById("formUser").action;
+			var dataInicial = document.getElementById("dataInicial").value;
+			var dataFinal = document.getElementById("dataFinal").value;
+			
+			$.ajax({
+	
+					method : "get",
+					url : urlAction,
+					data : "dataInicial=" + dataInicial + "&dataFinal=" + dataFinal + "&acao=relatorioGraficoUsuario",
+					success : function(response) {
+						
+						var json = JSON.parse(response);
+											
+						var myChart = new Chart(document.getElementById('myChart'), {
+							type : 'line',
+							data : {
+								labels : json.listaPerfil,
+								datasets : [ {
+									label : 'Gráfico de Salários',
+									backgroundColor : 'rgb(255, 99, 132)',
+									borderColor : 'rgb(255, 99, 132)',
+									data : json.listaMediaSalarial,
+								} ]
 							},
-						  options: {}
-						}
-				  );	
-		}
+							options : {}
+						});
+						
+					}
+	
+				}).fail(
+						function(xhr, status, errorThrown) {
+							alert('Erro ao tentar gerar gráfico de médial salarial ' + xhr.responseText);
+						});
+
 		
+			
+		}
 	</script>
 
 </body>
