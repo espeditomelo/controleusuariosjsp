@@ -197,8 +197,11 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("relatorioGraficoUsuario")) {
 			
-				String dataInicial = request.getParameter("dataInicial");
-				String dataFinal = request.getParameter("dataFinal");
+				//Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial)))
+				
+				String dataInicial = request.getParameter("dataInicial");				
+				
+				String dataFinal = request.getParameter("dataFinal");					
 				
 				BeanDTOPerfilSalarioParaGrafico beanDTOPerfilSalarioParaGrafico = new BeanDTOPerfilSalarioParaGrafico();
 				
@@ -207,7 +210,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					beanDTOPerfilSalarioParaGrafico = daoUsuarioRepository.listarPerfilseSalariosParaGrafico(super.getUsuarioLogado(request));
 					
 				} else {
-										
+					
+					beanDTOPerfilSalarioParaGrafico = daoUsuarioRepository.listarPerfilseSalariosParaGrafico(super.getUsuarioLogado(request), dataInicial, dataFinal);
 					
 				}
 				

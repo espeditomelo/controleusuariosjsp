@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -591,5 +592,34 @@ public class DAOUsuarioRepository {
 		
 	}
 	
+public BeanDTOPerfilSalarioParaGrafico listarPerfilseSalariosParaGrafico(Long usuarioLogado, String dataInicial, String dataFinal) throws Exception {
+		
+		String sql = "SELECT AVG(rendamensal) as mediasalarial, perfil FROM model_login WHERE id_cadastro = ? AND datanascimento BETWEEN ? AND ? GROUP BY perfil";
+		
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		
+		preparedStatement.setLong(1, usuarioLogado);
+		preparedStatement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		preparedStatement.setDate(3, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		
+		ResultSet resultSet = preparedStatement.executeQuery();
+		
+		List<Double> listaMediaSalarial = new ArrayList<Double>();
+		List<String> listaPerfil = new ArrayList<String>();
+		
+		BeanDTOPerfilSalarioParaGrafico beanDTOPerfilSalarioParaGrafico = new BeanDTOPerfilSalarioParaGrafico();
+		
+		while (resultSet.next()) {
+			
+			listaMediaSalarial.add(resultSet.getDouble("mediasalarial"));
+			listaPerfil.add(resultSet.getString("perfil"));
+		}
+		
+		beanDTOPerfilSalarioParaGrafico.setListaMediaSalarial(listaMediaSalarial);
+		beanDTOPerfilSalarioParaGrafico.setListaPerfil(listaPerfil);
+		
+		return beanDTOPerfilSalarioParaGrafico; 		
+		
+	}
 
 }
