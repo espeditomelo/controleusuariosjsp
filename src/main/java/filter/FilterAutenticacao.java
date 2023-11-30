@@ -1,8 +1,11 @@
 package filter;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import connection.SingleConnectionBD;
+import dao.DAOVersionadorBd;
 
 @WebFilter(urlPatterns = { "/principal/*" })
 public class FilterAutenticacao extends HttpFilter implements Filter {
@@ -85,7 +89,48 @@ public class FilterAutenticacao extends HttpFilter implements Filter {
 
 	// inicia quando os processos ou recursos quando o servidor executar
 	public void init(FilterConfig fConfig) throws ServletException {
+		
 		conn = SingleConnectionBD.getConnection();
+		
+		DAOVersionadorBd daoVersionadorBd = new DAOVersionadorBd();
+				
+		String caminhoArquivosBd = fConfig.getServletContext().getRealPath("arquivosbd") + File.separator;
+		
+		File[] arquivosBd = new File(caminhoArquivosBd).listFiles();
+				
+		try {
+			for (File arquivo : arquivosBd) {			
+				boolean arquivoBdJaExecutado = daoVersionadorBd.arquivoBdExecutado(arquivo.getName());		
+				
+				if (!arquivoBdJaExecutado) {
+					FileInputStream fileInputStream = new FileInputStream(arquivo);
+					Scanner scanner = new Scanner(fileInputStream, "UTF-8");
+					
+					StringBuilder stringBuilderSql = new StringBuilder();
+					
+					while(scanner.hasNext()) {
+						stringBuilderSql.append(scanner.nextLine());
+						stringBuilderSql.append("\n");
+					}
+					
+					conn.prepareStatement(stringBuilderSql.toString()).execute();
+					daoVersionadorBd.insereArquivoBd(arquivo.getName());
+					conn.commit();
+					scanner.close();
+				}
+			}
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 	}
 
 }
